@@ -12,10 +12,19 @@ class NumberConverter
     ones_digit = (@number % 10)
     tens_digit = (@number % 100) / 10
     hundreds_digit = (@number % 1000) / 100
-    convert_single_digit(ones_digit)
+    if tens_digit == 0
+      number_str = convert_ones_digit(ones_digit)
+    else
+      number_str = convert_tens_digit(tens_digit, ones_digit)
+    end
+    capitalize(number_str)
   end
   
-  def convert_single_digit(digit, silence_zeros = false)
+  def capitalize(number_str)
+    number_str[0].upcase + number_str[1...number_str.length]
+  end
+  
+  def convert_ones_digit(digit, silence_zeros = false)
     case digit
     when 0
       silence_zeros ? "" : "zero"
@@ -37,6 +46,55 @@ class NumberConverter
       "eight"
     when 9
       "nine"
+    end
+  end
+  
+  def convert_tens_digit(tens_digit, ones_digit)
+    case tens_digit
+    when 0
+      convert_ones_digit(ones_digit)
+    when 1
+      convert_teens(ones_digit)
+    else
+      converted_tens_digit = convert_enties(tens_digit)
+      converted_ones_digit = convert_ones_digit(ones_digit, true)
+      if converted_ones_digit.size > 0
+        "#{converted_tens_digit}-#{converted_ones_digit}"
+      else
+        converted_tens_digit
+      end
+    end
+  end
+  
+  def convert_teens(ones_digit)
+    case ones_digit
+    when 0
+      "ten"
+    when 1
+      "eleven"
+    when 2
+      "twelve"
+    when 3
+      "thirteen"
+    when 5
+      "fifteen"
+    else
+      convert_ones_digit(ones_digit)+"teen"
+    end
+  end
+  
+  def convert_enties(tens_digit)
+    case tens_digit
+    when 2
+      "twenty"
+    when 3
+      "thirty"
+    when 4
+      "forty"
+    when 5
+      "fifty"
+    else
+      convert_ones_digit(tens_digit)+"ty"
     end
   end
 end
