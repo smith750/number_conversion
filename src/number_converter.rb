@@ -9,14 +9,13 @@ class NumberConverter
   end
   
   def convert()
-    ones_digit = (@number % 10)
-    tens_digit = (@number % 100) / 10
-    hundreds_digit = (@number % 1000) / 100
-    if tens_digit == 0
-      number_str = convert_ones_digit(ones_digit)
-    else
-      number_str = convert_tens_digit(tens_digit, ones_digit)
-    end
+    num = @number.to_i
+    ones_digit = (num % 10)
+    tens_digit = (num % 100) / 10
+    hundreds_digit = (num % 1000) / 100
+    converted_hundreds_digit = convert_hundreds_digit(hundreds_digit)
+    converted_tens_digit = convert_tens_digit(tens_digit, ones_digit)
+    number_str = converted_hundreds_digit.length > 0 ? "#{converted_hundreds_digit} #{converted_tens_digit}" : converted_tens_digit
     capitalize(number_str)
   end
   
@@ -95,6 +94,15 @@ class NumberConverter
       "fifty"
     else
       convert_ones_digit(tens_digit)+"ty"
+    end
+  end
+  
+  def convert_hundreds_digit(hundreds_digit)
+    converted_hundreds_digit = convert_ones_digit(hundreds_digit, true)
+    if converted_hundreds_digit.length > 0
+      "#{converted_hundreds_digit} hundred"
+    else
+      converted_hundreds_digit
     end
   end
 end
