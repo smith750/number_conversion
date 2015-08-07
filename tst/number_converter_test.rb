@@ -17,4 +17,8 @@ class TestNumberConverter < Test::Unit::TestCase
   def test_two_hundred_seventy_three
     assert_equal("Two hundred seventy-three", NumberConverter.convert(273.0), "273 should convert to 'Two hundred seventy-three'")
   end
+  
+  def test_two_hundred
+    assert_equal("Two hundred", NumberConverter.convert(200.0), "200 should convert to 'Two hundred'")
+  end
 end

@@ -10,23 +10,30 @@ class NumberConverter
   
   def convert()
     num = @number.to_i
+    if num == 0
+      return "zero"
+    end
+    convert_hundred_block(num)
+    capitalize(number_str)
+  end
+  
+  def convert_hundred_block(num)
     ones_digit = (num % 10)
     tens_digit = (num % 100) / 10
     hundreds_digit = (num % 1000) / 100
     converted_hundreds_digit = convert_hundreds_digit(hundreds_digit)
     converted_tens_digit = convert_tens_digit(tens_digit, ones_digit)
-    number_str = converted_hundreds_digit.length > 0 ? "#{converted_hundreds_digit} #{converted_tens_digit}" : converted_tens_digit
-    capitalize(number_str)
+    number_str = converted_hundreds_digit.length > 0 && converted_tens_digit.length > 0 ? "#{converted_hundreds_digit} #{converted_tens_digit}" : converted_hundreds_digit.length > 0 ? converted_hundreds_digit : converted_tens_digit
   end
   
   def capitalize(number_str)
     number_str[0].upcase + number_str[1...number_str.length]
   end
   
-  def convert_ones_digit(digit, silence_zeros = false)
+  def convert_ones_digit(digit)
     case digit
     when 0
-      silence_zeros ? "" : "zero"
+      ""
     when 1
       "one"
     when 2
@@ -56,7 +63,7 @@ class NumberConverter
       convert_teens(ones_digit)
     else
       converted_tens_digit = convert_enties(tens_digit)
-      converted_ones_digit = convert_ones_digit(ones_digit, true)
+      converted_ones_digit = convert_ones_digit(ones_digit)
       if converted_ones_digit.size > 0
         "#{converted_tens_digit}-#{converted_ones_digit}"
       else
@@ -98,7 +105,7 @@ class NumberConverter
   end
   
   def convert_hundreds_digit(hundreds_digit)
-    converted_hundreds_digit = convert_ones_digit(hundreds_digit, true)
+    converted_hundreds_digit = convert_ones_digit(hundreds_digit)
     if converted_hundreds_digit.length > 0
       "#{converted_hundreds_digit} hundred"
     else
