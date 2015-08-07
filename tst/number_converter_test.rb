@@ -2,6 +2,10 @@ require_relative "../src/number_converter"
 require "test/unit"
 
 class TestNumberConverter < Test::Unit::TestCase
+  def test_zero
+    assert_equal("Zero", NumberConverter.convert(0.0), "0 should convert to 'Zero'")
+  end
+  
   def test_one
     assert_equal("One", NumberConverter.convert(1.0), "1 should convert to 'One'")
   end
