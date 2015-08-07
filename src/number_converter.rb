@@ -120,6 +120,8 @@ class NumberConverter
       "forty"
     when 5
       "fifty"
+    when 8
+      "eighty" # no double t's!!
     else
       convert_ones_digit(tens_digit)+"ty"
     end

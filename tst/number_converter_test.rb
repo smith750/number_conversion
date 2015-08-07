@@ -29,4 +29,16 @@ class TestNumberConverter < Test::Unit::TestCase
   def test_two_thousand_five_hundred_twenty_three
     assert_equal("Two thousand five hundred twenty-three", NumberConverter.convert(2523.0), "2523 should convert to 'Two thousand five hundred twenty three'")
   end
+  
+  def test_four_hundred_thousand
+    assert_equal("Four hundred thousand", NumberConverter.convert(400000.0), "400,000 should convert to 'Four hundred thousand'")
+  end
+  
+  def test_four_hundred_seventy_five_thousand_eight_hundred_eighty_three
+    assert_equal("Four hundred seventy-five thousand eight hundred eighty-three", NumberConverter.convert(475883.0), "Big numbers should convert correct")
+  end
+  
+  def test_three_million
+    assert_equal("Three million", NumberConverter.convert(3000000.0), "3,000,000 should convert to three million")
+  end
 end
