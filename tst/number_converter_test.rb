@@ -21,4 +21,8 @@ class TestNumberConverter < Test::Unit::TestCase
   def test_two_hundred
     assert_equal("Two hundred", NumberConverter.convert(200.0), "200 should convert to 'Two hundred'")
   end
+  
+  def test_two_thousand_five_hundred_twenty_three
+    assert_equal("Two thousand five hundred twenty-three", NumberConverter.convert(2523.0), "2523 should convert to 'Two thousand five hundred twenty three'")
+  end
 end

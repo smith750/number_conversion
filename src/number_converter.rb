@@ -4,17 +4,38 @@ class NumberConverter
     nc.convert()
   end
   
+  BLOCK_NAMES = ["", "thousand", "million", "trillion", "quadrillion", "quintillion"]
+  
   def initialize(number)
     @number = number
   end
   
   def convert()
-    num = @number.to_i
-    if num == 0
-      return "zero"
+    if @number == 0.0
+      return "Zero"
     end
-    convert_hundred_block(num)
+    num = @number.to_i
+    amount_in_hundreds_blocks = convert_blocks(num, [])
+    number_str = join_blocks(amount_in_hundreds_blocks)
     capitalize(number_str)
+  end
+  
+  def join_blocks(converted_blocks)
+    right_blocks = converted_blocks.reverse
+    tagged_blocks = converted_blocks.zip(BLOCK_NAMES).select{|block| block[0].length > 0}
+    right_blocks = tagged_blocks.reverse
+    right_blocks.collect{|block| "#{block[0]} #{block[1]}".strip}.join(" ").strip
+  end
+  
+  def convert_blocks(remaining_amount, converted_blocks)
+    if remaining_amount == 0
+      converted_blocks
+    else
+      converted_hundreds_block = convert_hundred_block(remaining_amount)
+      remaining_amount_without_hundreds_block = (remaining_amount - (remaining_amount % 1000)) / 1000
+      converted_blocks << converted_hundreds_block
+      convert_blocks(remaining_amount_without_hundreds_block, converted_blocks)
+    end
   end
   
   def convert_hundred_block(num)
