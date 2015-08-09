@@ -5,6 +5,10 @@ module NumberScrubber
   end
   
   def NumberScrubber.clean_string(number)
-    number.gsub(/[^\d\.]/, "")
+    scrubbed = number.gsub(/[^\d\.]/, "").gsub(/^0+/, "")
+    if !scrubbed.index(".").nil?
+      scrubbed = scrubbed.gsub(/0*/,"")
+    end
+    scrubbed
   end
 end
