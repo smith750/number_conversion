@@ -12,17 +12,27 @@ module NumberValidator
     attr_reader :message
   end
   
+  class ValidationResults
+    def initialize(results)
+      @failures = results.select {|val| val.class == NumberValidator::Failure}
+      @success = @failures.empty?
+    end
+    
+    def success?
+      @success
+    end
+    
+    def error_messages
+      @failures.collect {|val| val.message}
+    end
+  end
+  
   def NumberValidator.validate(value)
     results = []
     results << NumberValidator.value_numeric?(value)
     results << NumberValidator.value_positive?(value)
     results << NumberValidator.value_within_size_range?(value)
-    failures = results.select {|val| val.class == NumberValidator::Failure}
-    if failures.empty?
-      [results[0]]
-    else
-      failures
-    end
+    return ValidationResults.new(results)
   end
   
   def NumberValidator.value_numeric?(value)
