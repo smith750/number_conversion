@@ -14,10 +14,17 @@ class NumberConverter
     if @number == 0.0
       return "Zero"
     end
-    num = @number.to_i
-    amount_in_hundreds_blocks = convert_blocks(num, [])
-    number_str = join_blocks(amount_in_hundreds_blocks)
+    number_str = convert_before_decimal_part()
+    if has_fractional_part?
+      fractional_part = convert_fractional_part()
+      number_str += " and #{fractional_part}"
+    end
     capitalize(number_str)
+  end
+  
+  def convert_before_decimal_part()
+    amount_in_hundreds_blocks = convert_blocks(@number.to_i, [])
+    join_blocks(amount_in_hundreds_blocks)
   end
   
   def join_blocks(converted_blocks)
@@ -134,5 +141,23 @@ class NumberConverter
     else
       converted_hundreds_digit
     end
+  end
+  
+  def has_fractional_part?
+    potential_fractional_part = calculate_fractional_part()
+    potential_fractional_part > 0
+  end
+  
+  def convert_fractional_part
+    fractional_part = calculate_fractional_part
+    fractional_part_str = fractional_part.to_s
+    if fractional_part_str.length == 1
+      fractional_part_str = "0#{fractional_part_str}"
+    end
+    "#{fractional_part_str}/100"
+  end
+  
+  def calculate_fractional_part
+    (@number * 100.0).to_i % 100
   end
 end

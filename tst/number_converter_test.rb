@@ -41,4 +41,12 @@ class TestNumberConverter < Test::Unit::TestCase
   def test_three_million
     assert_equal("Three million", NumberConverter.convert(3000000.0), "3,000,000 should convert to three million")
   end
+  
+  def test_fractional_part
+    assert_equal("One and 03/100", NumberConverter.convert(1.03), "1.03 should convert to One and 03/100")
+  end
+  
+  def test_fractional_part_with_padding
+    assert_equal("One and 30/100", NumberConverter.convert(1.3), "1.3 should convert to One and 03/100")
+  end
 end
